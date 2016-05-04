@@ -8,13 +8,13 @@ This example shows how to locate ohlc bars in trading days. For example, how to 
 from current trading day, how to get bars from yesterday by using the `today_ohlc`, `yesterday_ohlc` and
 the more general `ohlc_in_last_days` method.
 
-```
+```python
 from ctxalgoctp.ctp.backtesting_utils import *
 ```
 
 The following listing shows a dummy strategy class, and the `on_bar` method locates ohlc bars in different trading days.
 
-```
+```python
 class DummyStrategy(AbstractStrategy):
     """
     A single double moving average trend following strategy:
@@ -53,7 +53,7 @@ class DummyStrategy(AbstractStrategy):
 
 Now, we create configurations for backtesting the strategy.
 
-```
+```python
 start_date = '2014-01-01'  # Backtesting start date.
 end_date = '2014-12-31'    # Backtesting end date.
 

@@ -7,7 +7,7 @@ category: en
 This example shows how to iterate over data source for backtesting directly, without going through the backtester.
 But similar to going over data in the backtester, you can setup the iterator to generate different periods of ohlcs.
 
-```
+```python
 import os
 from ctxalgolib.ohlc.periodicity import Periodicity
 from ctxalgolib.trading_utils.future_info_calculator_factory import FutureInfoCalculatorFactory
@@ -24,7 +24,7 @@ among the periods of the ohlcs that you want your iterator to generate. Here we 
 that we want to download 15 minute bars as historical data.
 The historical trading data will be accessible through `data_source`.
 
-```
+```python
 instrument_ids = ['cu99']
 start_date = '2014-01-01'  # Backtesting start date.
 end_date = '2014-12-31'    # Backtesting end date.
@@ -40,7 +40,7 @@ Then, we call `bars_iterator` to get an iterator which yields the required 30 mi
 a tuple of three elements (instrument_id, bars, all_ohlcs). `instrument_id` tells you whose bars are being returned
 this time. `bars' contains the returned bars. `all_ohlcs` contains all the ohlcs that are generated so far.
 
-```
+```python
 def iterate_over_data(ds, periods):
     """
     Iterate over data_source.
@@ -78,7 +78,7 @@ multiple instruments.
 To iterate over multiple instruments, the only change we need is to get data for those instruments. So we
 set `instrument_ids` to have two instruments. Here we specify two instruments, cu99 and rb99. That's it.
 
-```
+```python
 instrument_ids = ['cu99', 'rb99']
 data_source2 = get_data_source(instrument_ids, base_folder, start_date, end_date, data_period)
 
@@ -92,7 +92,7 @@ If you want to get the whole ohlcs directly, instead of iterating over an iterat
 call the `ohlcs` method from a data source. The `ohlcs` method has the same parameters as the `bars_iterator` method,
 but it returns the full ohlcs, instead of an iterator.
 
-```
+```python
 print('============ Get whole ohlcs directly ============')
 ohlcs = data_source2.ohlcs(ohlc_periods)
 print('30 minute cu99 ohlc length: {}'.format(ohlcs['time-based']['cu99'][Periodicity.THIRTY_MINUTE].length))

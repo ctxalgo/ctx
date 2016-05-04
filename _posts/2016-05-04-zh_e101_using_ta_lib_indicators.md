@@ -1,24 +1,23 @@
 ---
-title: Using financial indicators from ta-lib in strategies
+title: 在策略中使用来自ta-lib的指标
 layout: post
-category: en
+category: zh
 ---
 
-This example shows how to use indicators from [ta-lib](https://github.com/mrjbq7/ta-lib), a library that
-includes hundreds of popular financial indicators, such as SMA, EMA, MACD, RSI.
-The full list of ta-lib indicators can be found [here](https://github.com/mrjbq7/ta-lib/tree/master/docs/func_groups).
+本示例展示如何在策略中使用来自[ta-lib](https://github.com/mrjbq7/ta-lib)的指标。ta-lib中包括了上百种常用的金融指标,
+比如EMA, EMA, MACD, RSI。
+[这里](https://github.com/mrjbq7/ta-lib/tree/master/docs/func_groups)包括了ta-lib中的所有指标。
 
-```
+```python
 import talib
 import numpy as np
 from ctxalgolib.ta.cross import cross_direction
 from ctxalgoctp.ctp.backtesting_utils import *
 ```
 
-The following listing shows the strategy class. Inside the `on_bar` method, we use `talib.SMA` to calculate
-simple moving averages.
+一下代码段展示了完整的交易策略。在`on_bar`方法中，我们使用`talib.SMA`来计算移动平均线。
 
-```
+```python
 class TrendFollowingStrategy(AbstractStrategy):
     """
     A single double moving average trend following strategy:
@@ -50,9 +49,9 @@ class TrendFollowingStrategy(AbstractStrategy):
                 self.change_position_to(signal)
 ```
 
-Now, we create configurations for backtesting the strategy.
+现在我们对以上交易策略进行历史数据的回测。
 
-```
+```python
 from ctxalgoctp.ctp.starterkit.e100_trend_following_strategy import start_date, end_date, config
 report, data_source = backtest(TrendFollowingStrategy, config, start_date, end_date)
 

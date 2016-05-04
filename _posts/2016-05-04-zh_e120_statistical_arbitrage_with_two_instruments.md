@@ -4,7 +4,7 @@ layout: post
 category: zh
 ---
 
-```
+```python
 from ctxalgoctp.ctp.backtesting_utils import *
 import math
 from statsmodels.tools.tools import add_constant, Bunch

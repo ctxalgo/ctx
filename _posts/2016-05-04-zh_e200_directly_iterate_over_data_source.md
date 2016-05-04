@@ -6,7 +6,7 @@ category: zh
 
 本示例展示如何直接对回测历史数据进行迭代访问，以及如何设置需要对哪些周期的K线数据进行迭代访问。
 
-```
+```python
 import os
 from ctxalgolib.ohlc.periodicity import Periodicity
 from ctxalgolib.trading_utils.future_info_calculator_factory import FutureInfoCalculatorFactory
@@ -20,7 +20,7 @@ from ctxalgoctp.ctp.backtesting_utils import get_data_source
 历史数据的周期由`data_period`来指定，这个周期应该是以后需要生成的K线周期中最小的。在此，我们指定历史数据的周期为15分钟。
 在调用`get_data_source`后，历史数据就可以从`data_source`中获得。
 
-```
+```python
 instrument_ids = ['cu99']
 start_date = '2014-01-01'  # Backtesting start date.
 end_date = '2014-12-31'    # Backtesting end date.
@@ -35,7 +35,7 @@ K线。这些级别的K线都是由之前下载的15分钟级别的历史数据�
 (instrumment_id, bars, all_ohlcs)。`instrument_id`指明生成的是哪个品种的K线。`bars`包含着刚生成的K线。`all_ohlcs`包含着
 到目前为止生成的所有的K线。
 
-```
+```python
 def iterate_over_data(ds, periods):
     """
     Iterate over data_source.
@@ -70,7 +70,7 @@ iterate_over_data(data_source, ohlc_periods)
 以上代码展示的是如何迭代单一品种的交易数据。接下来我们展示如何同时迭代多品种的交易数据。要迭代多品种，唯一需要进行的
 代码修改是通过`instrument_ids`指定多个品种的ID。在这里我们指定了两个品种cu99和rb99。
 
-```
+```python
 instrument_ids = ['cu99', 'rb99']
 data_source2 = get_data_source(instrument_ids, base_folder, start_date, end_date, data_period)
 
@@ -83,7 +83,7 @@ iterate_over_data(data_source2, ohlc_periods)
 有时候，你希望直接获得完整的ohlc数据，而不是通过一个迭代器一根K线一根K线的获得。这时候，可以使用`ohlcs`方法。该方法
 具有和`bars_iterator`方法一样的参数，所不同的是，`ohlcs`返回生成完的完整的ohlc。
 
-```
+```python
 print('============ Get whole ohlcs directly ============')
 ohlcs = data_source2.ohlcs(ohlc_periods)
 print('30 minute cu99 ohlc length: {}'.format(ohlcs['time-based']['cu99'][Periodicity.THIRTY_MINUTE].length))

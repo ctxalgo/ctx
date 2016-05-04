@@ -1,23 +1,21 @@
 ---
-title: Simple trend following strategy using two moving averages
+title: 双均线趋势跟踪策略
 layout: post
-category: en
+category: zh
 ---
 
-This example shows how to write trading strategies for a single instrument. The example includes
-a double moving average trend following strategy, the code to perform backtesting of the strategy, and
-the code to investigate trades through generated charts.
+本示例展示如何书写单品种的交易策略，它包括一个基于双均线的趋势跟踪交易策略，回测以及查看结果的代码。
 
-```
+```python
 from ctxalgolib.ta.online_indicators.moving_averages import MovingAveragesIndicator
 from ctxalgolib.charting.charts import ChartsWithReport
 from ctxalgolib.ta.cross import cross_direction
 from ctxalgoctp.ctp.backtesting_utils import *
 ```
 
-The following listing shows the strategy class.
+以下代码段展示了完整的交易策略
 
-```
+```python
 class TrendFollowingStrategy(AbstractStrategy):
     """
     A single double moving average trend following strategy:
@@ -61,10 +59,10 @@ class TrendFollowingStrategy(AbstractStrategy):
                 self.change_position_to(signal)
 ```
 
-Now, we create configurations for backtesting the strategy. After backtesting, we generate a chart in form of
-HTML page to view all the traded. You can review the trades inside a browser.
+现在我们对以上交易策略进行历史数据的回测。回测之后，我们生成一个网页，包括所有产生的交易记录。
+你可以在浏览器中打开该页面查看具体的交易信息。
 
-```
+```python
 def main():
     start_date = '2014-01-01'  # Backtesting start date.
     end_date = '2014-12-31'    # Backtesting end date.
