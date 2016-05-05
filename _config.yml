@@ -1,5 +1,4 @@
 timezone: Asia/Shanghai
-markdown: redcarpet
 permalink: /:categories/:title.html
 url:
 
@@ -8,3 +7,7 @@ paginate_path: "page:num"
 
 gems: 
   [jekyll-paginate]
+
+markdown: redcarpet
+redcarpet:
+    extensions: ["fenced_code_blocks", "autolink", "tables", "strikethrough"]
