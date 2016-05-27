@@ -16,7 +16,7 @@ from ctxalgoctp.ctp.backtesting_utils import get_data_source
 ```
 
 ## Iterating over a single instrument's ohlc.
-First, we get some historical trading data. The data is downloaded from CTX servers and stored in base_folder.
+First, we get some historical trading data. The data is downloaded from CTX servers and stored in `base_folder`.
 You can get the `base_folder` to your own folder. Use `instrument_ids` to specify the instruments whose data
 is to be downloaded. Here, we only specify a single instrument. The historical data time range is decided by
 `start_date` and `end_date`. `data_period` specifies the granularity period of the data. It should be smallest
@@ -71,7 +71,7 @@ ohlc_periods = [Periodicity.THIRTY_MINUTE, Periodicity.DAILY]
 iterate_over_data(data_source, ohlc_periods)
 ```
 
-## Iterating over multiple instruments' ohlcs.
+## Iterating over multiple instruments' ohlcs
 The above code demonstrates how to iterate over a single instrument's ohlcs. The following code shows how to
 iterate over multiple instruments' ohlcs at the same time. This is useful when designing strategies involving
 multiple instruments.
@@ -84,6 +84,19 @@ data_source2 = get_data_source(instrument_ids, base_folder, start_date, end_date
 
 print('============ Iterate over two instruments\' ohlcs ============')
 iterate_over_data(data_source2, ohlc_periods)
+```
+
+## Iterating over multiple bars
+If you want to get an event when a set of instruments have all proceeded with a bar,
+you can use `multiple_bars_iterator`. This method returns an iterator. The iterator yields an element
+when all the listed instruments progressed with a bar in the given periods.
+
+```python
+print('============ Iterate over multiple bars ============')
+for ohlcs in data_source2.multiple_bars_iterator(period=Periodicity.THIRTY_MINUTE, instrument_ids=['cu99', 'rb99']):
+    ohlc1 = ohlcs['cu99']
+    ohlc2 = ohlcs['rb99']
+    print('{} {}: {}\t{} {}: {}'.format('cu99', ohlc1.length, ohlc1.dates[-1], 'rb99', ohlc2.length, ohlc2.dates[-1]))
 
 ```
 

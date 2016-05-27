@@ -1,12 +1,10 @@
 ---
-title: Simple trend following strategy using two moving averages
+title: 双均线趋势跟踪策略
 layout: post
-category: en
+category: zh
 ---
 
-This example shows how to write trading strategies for a single instrument. The example includes
-a double moving average trend following strategy, the code to perform backtesting of the strategy, and
-the code to investigate trades through generated charts.
+本示例展示如何书写单品种的交易策略，它包括一个基于双均线的趋势跟踪交易策略，回测以及查看结果的代码。
 
 ```python
 from ctxalgolib.ta.online_indicators.moving_averages import MovingAveragesIndicator
@@ -15,7 +13,7 @@ from ctxalgolib.ta.cross import cross_direction
 from ctxalgoctp.ctp.backtesting_utils import *
 ```
 
-The following listing shows the strategy class.
+以下代码段展示了完整的交易策略
 
 ```python
 class TrendFollowingStrategy(AbstractStrategy):
@@ -34,6 +32,7 @@ class TrendFollowingStrategy(AbstractStrategy):
         # Setup the moving average calculators. This strategy needs two moving averages, a fast one and a slow one.
         # The fast moving average use the fast_ma_period as its parameter, the slow moving average uses slow_ma_period.
         # Note that you can directly reference the parameters, such as fast_ma_period through self.fast_ma_period.
+        # You can also use the notation self.parameters.fast_ma_period to reference the parameter.
         self.ma_ind1 = MovingAveragesIndicator(period=self.fast_ma_period)
         self.ma_ind2 = MovingAveragesIndicator(period=self.slow_ma_period)
 
@@ -61,8 +60,8 @@ class TrendFollowingStrategy(AbstractStrategy):
                 self.change_position_to(signal)
 ```
 
-Now, we create configurations for backtesting the strategy. After backtesting, we generate a chart in form of
-HTML page to view all the traded. You can review the trades inside a browser.
+现在我们对以上交易策略进行历史数据的回测。回测之后，我们生成一个网页，包括所有产生的交易记录。
+你可以在浏览器中打开该页面查看具体的交易信息。
 
 ```python
 def main():
@@ -82,9 +81,12 @@ def main():
     report, data_source = backtest(TrendFollowingStrategy, config, start_date, end_date)
 
     # Use charting facility to visualize trades.
-    c = ChartsWithReport(data_source, report, folder=report.base_folder, open_in_browser=True)
+    c = ChartsWithReport(report, data_source, folder=report.base_folder, open_in_browser=True)
     c.set_instrument(config['instrument_ids'][0])
     c.period(config['strategy_period'])
+
+    c.ohlc()                                        # Draw ohlc bars.
+    c.volume()                                      # Draw volumes bars.
 
     c.ma(config['parameters']['fast_ma_period'])    # Draw the fast moving average.
     c.ma(config['parameters']['slow_ma_period'])    # Draw the slow moving average.

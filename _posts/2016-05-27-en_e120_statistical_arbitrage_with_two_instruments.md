@@ -1,5 +1,5 @@
 ---
-title: No title
+title: Statistical Arbitrage With Two Instruments
 layout: post
 category: en
 ---

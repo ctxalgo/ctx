@@ -76,6 +76,18 @@ data_source2 = get_data_source(instrument_ids, base_folder, start_date, end_date
 
 print('============ Iterate over two instruments\' ohlcs ============')
 iterate_over_data(data_source2, ohlc_periods)
+```
+
+## 迭代多个品种的K线
+如果你需要在多个品种的指定K线同时向前走过了一根K线时得到一个事件，你可以使用`multiple_bars_iterator`。
+该方法返回一个迭代器。当所有指定品种都走过一根K线后，这个迭代器会生成一个元素。
+
+```python
+print('============ Iterate over multiple bars ============')
+for ohlcs in data_source2.multiple_bars_iterator(period=Periodicity.THIRTY_MINUTE, instrument_ids=['cu99', 'rb99']):
+    ohlc1 = ohlcs['cu99']
+    ohlc2 = ohlcs['rb99']
+    print('{} {}: {}\t{} {}: {}'.format('cu99', ohlc1.length, ohlc1.dates[-1], 'rb99', ohlc2.length, ohlc2.dates[-1]))
 
 ```
 
