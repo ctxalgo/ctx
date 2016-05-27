@@ -18,6 +18,10 @@ title: Pages
                     {% endfor %}
                 </ul>
             </li>
+        {% elsif cate[0] != 'en' %}
+            <li id="{{ cate[0] }}">
+                <h4><a href="./{{ cate[0] }}.html">{{ cate[0] }}</a></h4>
+            </li>
         {% endif %}
         {% endfor %}
     </ul>

@@ -1,7 +1,7 @@
 ---
 title: Run Strategy In Ipython Notebook
 layout: post
-category: ipython
+categories: [ipython,zh,en]
 ---
 
 
