@@ -1,16 +1,14 @@
 ---
-title: Using the plain backtester
+title: 使用简化回测器
 layout: post
-category: en
+category: zh
 ---
 
-When you want to do a fast prototype of a strategy just be iterating over ohlcs, you can use the `PlainBacktester`
-class. This class provides a API set similar to that of `AbstractStrategy`, which is what you use when writing
-real strategies. The benefit of using `PlainBacktester` is that it runs much faster than the actual backtester.
-`PlainBacktester` runs faster because:
-1. It does not simulate trading events, it only accepts close price from ohlc bars.
-2. It assumes all trades are executed immediately on bar close.
-This example demonstrates `PlainBacktester` with a double moving average trend following strategy.
+有时候，你只想快速测试一个策略的想法，这时候，你可以使用`PlainBacktester`。这个类提供了一组和`AbstractStrategy`类似
+的API，让你能够快速进行策略原型的编程和实验。使用`PlainBacktester`的好处是它比标准的回测器要快很多，原因如下：
+1. `PlainBacktester`不进行真实交易时的各种事件回调的仿真，它只接受来自ohlc的K线数据。
+2. `PlainBacktester`默认所有的交易都立即全部执行。
+本例子展示如何用`PlainBacktester`书写一个双均线趋势跟踪策略。
 
 ```python
 import os
@@ -26,8 +24,7 @@ from ctxalgoctp.ctp.plain_backtester import PlainBacktester
 from ctxalgoctp.ctp.slippage_models import VolumeBasedSlippageModel
 ```
 
-First, we get a data source for some instrument to trade by using the `get_data_source` method.
-From the retrieved data source, we can get desired ohlcs.
+首先，我们使用`get_data_source`来获取所需要的K线数据。
 
 ```python
 instrument_id = 'cu99'
@@ -41,10 +38,9 @@ data_source = get_data_source([instrument_id], base_folder, start_date, end_date
 ohlc = data_source.ohlcs()['time-based'][instrument_id][data_period]
 ```
 
-Then, we implements a simple double moving average trend following strategy using plain backtester.
-See [here](e100_trend_following_strategy.html) for the definition of the strategy.
-We create a plain backtester and then iterating the bars from the retrieved ohlc data. During the iteration,
-we call `change_position_to` method from the plain backtester to open and close positions.
+接着，我们来实现一个双均线趋势跟踪策略。策略的逻辑可参见[这里](e100_trend_following_strategy.html)。
+我们实例化一个简化的回测器，指定初始资本100万，并且指定在交易时使用真实的手续费。然后，我们迭代K线数据，并且
+使用`change_position_to`方法来改变持仓仓位。
 
 ```python
 parameters = {
@@ -63,7 +59,10 @@ slow_ma = talib.SMA(np.array(ohlc.closes), timeperiod=parameters['slow_ma_bars']
 # Here we set the backtester to include commission and use `VolumeBasedSlippageModel` to introduce slippage.
 # Other slippage models are available at `ctxalgoctp.ctp.slippage_models'. If you set `slippage_model` to None,
 # No slippage will be included.
-backtester = PlainBacktester(initial_capital=1000000.0, has_commission=True, slippage_model=VolumeBasedSlippageModel())
+backtester = PlainBacktester(
+    initial_capital=1000000.0,                  # Initial capital
+    has_commission=True,                        # Include commission in trading
+    slippage_model=VolumeBasedSlippageModel())  # Setup slippage model
 backtester.set_instrument_ids([instrument_id])
 
 # Iterating through the ohlc bars. We start from parameters['slow_ma_bars'], because
@@ -86,8 +85,7 @@ for bar in range(parameters['slow_ma_bars'], ohlc.length):
         backtester.change_position_to(price, signal, timestamp, instrument_id=instrument_id)
 ```
 
-After backtesting, we can investigate the results. We first print out the backtesting summary, and then chart the
-trade details in browser.
+在回测完成后，我们可以查看结果。我们先打印出交易报表，然后在浏览器中显示交易细节。
 
 ```python
 report = backtester.report()
