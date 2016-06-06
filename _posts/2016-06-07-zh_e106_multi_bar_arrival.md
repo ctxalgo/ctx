@@ -44,14 +44,20 @@ class TwoInstrumentStrategy(AbstractStrategy):
         print(' '.join(['{} has {} bars.'.format(sid, len(ohlcs[sid])) for sid in ohlcs]))
 
 
-start_date = '2015-01-01'
-end_date = '2015-01-31'
+def main():
+    start_date = '2015-01-01'
+    end_date = '2015-01-31'
 
-config = {
-    'instrument_ids': ['cu99', 'rb99'],  # Specify multiple instrument ids to trade.
-    'strategy_period': Periodicity.FIVE_MINUTE
-}
+    config = {
+        'instrument_ids': ['cu99', 'rb99'],  # Specify multiple instrument ids to trade.
+        'strategy_period': Periodicity.FIVE_MINUTE
+    }
 
-backtest(TwoInstrumentStrategy, config, start_date, end_date, Periodicity.ONE_MINUTE)
+    backtest(TwoInstrumentStrategy, config, start_date, end_date, Periodicity.ONE_MINUTE)
+
+
+if __name__ == '__main__':
+    main()
+
 
 ```
