@@ -58,6 +58,9 @@ class TrendFollowingStrategy(AbstractStrategy):
                 # change_position_to(1)   # close the short position, and open a long position.
                 # So at the end, you have 1 long position.
                 self.change_position_to(signal)
+
+    def on_trade(self, trade_info):
+        pass
 ```
 
 现在我们对以上交易策略进行历史数据的回测。回测之后，我们生成一个网页，包括所有产生的交易记录。
