@@ -38,7 +38,7 @@ data_source = get_data_source([instrument_id], base_folder, start_date, end_date
 ohlc = data_source.ohlcs()['time-based'][instrument_id][data_period]
 ```
 
-接着，我们来实现一个双均线趋势跟踪策略。策略的逻辑可参见[这里](e100_trend_following_strategy.html)。
+接着，我们来实现一个双均线趋势跟踪策略。策略的逻辑可参见[这里](zh/e100_trend_following_strategy.html)。
 我们实例化一个简化的回测器，指定初始资本100万，并且指定在交易时使用真实的手续费。然后，我们迭代K线数据，并且
 使用`change_position_to`方法来改变持仓仓位。
 

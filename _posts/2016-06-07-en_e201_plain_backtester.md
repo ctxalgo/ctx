@@ -42,7 +42,7 @@ ohlc = data_source.ohlcs()['time-based'][instrument_id][data_period]
 ```
 
 Then, we implements a simple double moving average trend following strategy using plain backtester.
-See [here](e100_trend_following_strategy.html) for the definition of the strategy.
+See [here](en/e100_trend_following_strategy.html) for the definition of the strategy.
 We create a plain backtester and then iterating the bars from the retrieved ohlc data. During the iteration,
 we call `change_position_to` method from the plain backtester to open and close positions.
 
