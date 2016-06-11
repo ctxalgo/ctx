@@ -57,7 +57,7 @@ def main():
         'strategy_period': Periodicity.FIVE_MINUTE
     }
 
-    backtest(TwoInstrumentStrategy, config, start_date, end_date, Periodicity.ONE_MINUTE)
+    backtest(TwoInstrumentStrategy, config, start_date, end_date)
 
 
 if __name__ == '__main__':
