@@ -1,3 +1,11 @@
-body{
+html, body{
     /*padding: 10px;*/
+    height:100%;
 }
+
+.wrap {
+	min-height:100%;
+}
+.footer {
+  margin-top:-75px;
+} 

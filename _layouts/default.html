@@ -6,14 +6,15 @@
     <link rel="stylesheet" href="/css/bt.css">
     <link rel="stylesheet" href="/css/global.css">
     <link rel="stylesheet" href="/css/pygments.css">
-</head>
 <body>
-    {% include top_nav.html %}
-    {% include header.html %}
-    <div class="main container">
-        <div class="row">
-            <div class="col-md-offset-1 col-md-10">
-                {{ content }}
+    <div class="wrap">
+        {% include top_nav.html %}
+        {% include header.html %}
+        <div class="main container">
+            <div class="row">
+                <div class="col-md-offset-1 col-md-10">
+                    {{ content }}
+                </div>
             </div>
         </div>
     </div>
