@@ -14,6 +14,7 @@ category: zh
 import os
 import talib
 import numpy as np
+from datetime import datetime
 
 from ctxalgolib.ohlc.periodicity import Periodicity
 from ctxalgolib.ta.cross import cross_direction
@@ -31,14 +32,14 @@ instrument_id = 'cu99'
 start_date = '2014-01-01'  # Backtesting start date.
 end_date = '2014-12-31'    # Backtesting end date.
 base_folder = os.path.join(os.environ['CTXALGO_TEST'], 'strategies', 'plain_backtester')
-data_period = Periodicity.HOURLY
+data_period = Periodicity.ONE_MINUTE
 data_source = get_data_source([instrument_id], base_folder, start_date, end_date, data_period)
 
 # Get ohlc from data source. The ohlc object contains the required data for the instrument.
 ohlc = data_source.ohlcs()['time-based'][instrument_id][data_period]
 ```
 
-接着，我们来实现一个双均线趋势跟踪策略。策略的逻辑可参见[这里](e100_trend_following_strategy.html)。
+接着，我们来实现一个双均线趋势跟踪策略。策略的逻辑可参见[这里](zh/e100_trend_following_strategy.html)。
 我们实例化一个简化的回测器，指定初始资本100万，并且指定在交易时使用真实的手续费。然后，我们迭代K线数据，并且
 使用`change_position_to`方法来改变持仓仓位。
 
@@ -59,11 +60,15 @@ slow_ma = talib.SMA(np.array(ohlc.closes), timeperiod=parameters['slow_ma_bars']
 # Here we set the backtester to include commission and use `VolumeBasedSlippageModel` to introduce slippage.
 # Other slippage models are available at `ctxalgoctp.ctp.slippage_models'. If you set `slippage_model` to None,
 # No slippage will be included.
-backtester = PlainBacktester(initial_capital=1000000.0, has_commission=True, slippage_model=VolumeBasedSlippageModel())
+backtester = PlainBacktester(
+    initial_capital=1000000.0,                  # Initial capital
+    has_commission=True,                        # Include commission in trading
+    slippage_model=VolumeBasedSlippageModel())  # Setup slippage model
 backtester.set_instrument_ids([instrument_id])
 
 # Iterating through the ohlc bars. We start from parameters['slow_ma_bars'], because
 # before this bar, there won't be enough data to to calculate slow moving average.
+start_time = datetime.now()
 for bar in range(parameters['slow_ma_bars'], ohlc.length):
     price = ohlc.closes[bar]
     timestamp = ohlc.dates[bar]
@@ -80,6 +85,8 @@ for bar in range(parameters['slow_ma_bars'], ohlc.length):
     signal = cross_direction(fast_ma, slow_ma, offset=-bar)
     if signal != 0:
         backtester.change_position_to(price, signal, timestamp, instrument_id=instrument_id)
+end_time = datetime.now()
+print('Backtesting duration: ' + str(end_time - start_time))
 ```
 
 在回测完成后，我们可以查看结果。我们先打印出交易报表，然后在浏览器中显示交易细节。
